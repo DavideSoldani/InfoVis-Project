@@ -8,8 +8,8 @@ function Arc(tail, arrow, tree) {
 }
 
 Node.prototype.printArc = function () {
-  return "The arc start from "+this.tail.toString();+" and goes to "+this.arrow.toString()+"it belongs to the  "+this.tree.toString()+" tree";
-}
+  return "The arc start from "+this.tail.toString()+" and goes to "+this.arrow.toString()+"it belongs to the  "+this.tree.toString()+" tree";
+};
 
 
 function creaSchnyderRealizers(embedding){
@@ -26,19 +26,21 @@ function creaSchnyderRealizers(embedding){
 		var viciniDiT3 = embeddingCopy[t3];
 		//scorro i nodi che hanno un arco in comune a t3
 		let nodoDaEliminare = null;
-		for(let j=0, j<viciniDiT3.length; j++){
+		for(let j=0; j<viciniDiT3.length; j++){
 			let nodoAttuale = viciniDiT3[j];
-			if(!nodiDaIgnorare.include(nodoAttuale)){
+			if(!nodiDaIgnorare.includes(nodoAttuale)){
 				let viciniNodoAttuale = embeddingCopy[nodoAttuale];
 				let viciniInComune =  viciniDiT3.filter(x => viciniNodoAttuale.includes(x));
-				if(viciniNodoAttuale.length === 2)
+				if(viciniInComune.length === 2) {
 					nodoDaEliminare = nodoAttuale;
+				}
+
 			}
 		}
 
 		viciniNodoDaEliminare = embeddingCopy[nodoDaEliminare];
 		//cancello il nodo dalla lista di adiacenza dei vicini
-		for(let j=0; j<viciniNodoDaEliminare.length;i++){
+		for(let j=0; j<viciniNodoDaEliminare.length;j++){
 			let vicino = viciniNodoDaEliminare[j];
 			let listaDiAdiacenzaVicino = embeddingCopy[vicino];
 			let indiceNodoDaEliminareNellaListaDiAdiacenzaDelVicino = listaDiAdiacenzaVicino.indexOf(nodoDaEliminare);
@@ -100,7 +102,7 @@ function creaSchnyderRealizers(embedding){
 					return false;
 				else if(elem.tree!==t3)
 					return false;
-				else return true:
+				else return true;
 
 			});
 
@@ -109,17 +111,18 @@ function creaSchnyderRealizers(embedding){
 
 		for(let i=0; i<viciniNodoAttuale.length;i++){
 			let temp = new Arc(viciniNodoAttuale[i],nodoAttuale,t3);
+			arcs.push(temp);
 		}
 
 	}
 	
-	let temp = new Arc(t1,t2,-1)
+	let temp = new Arc(t1,t2,-1);
 	arcs.push(temp);
 	temp = new Arc(t2, t3,-1);
 	arcs.push(temp);
 	temp = new Arc(t3, t1,-1);
 	arcs.push(temp);
-
+	console.log(arcs.length);
 	return arcs;
 }
 
@@ -131,7 +134,7 @@ for(let i=0; i<result_arcs.length;i++){
 	let arc = result_arcs[i];
 	console.log(
 		arc.tail+"---->"+arc.arrow + (arc.tree === t1 ? ", blue" :
-									  arc.tree === t2 ? ", yellow" :
+									  arc.tree === t2 ? ", green" :
 									  arc.tree === t3 ? ", red" : ", ext")
 
 
