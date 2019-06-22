@@ -99,7 +99,7 @@ function creaSchnyderRealizers(embedding){
 			let vicino = viciniNodoAttuale[i];
 			let t3IndiceArco = arcs.findIndex(function(elem){
 				if(elem.tail!==vicino)
-					return false
+					return false;
 				else if(elem.arrow!==t3)
 					return false;
 				else if(elem.tree!==t3)
@@ -124,9 +124,9 @@ function creaSchnyderRealizers(embedding){
 	return arcs;
 }
 
-var example = [[10,5,3,2,1],[0,2,4,7,10],[0,3,6,4,1],[0,5,9,6,2],[2,6,7,1],[0,10,9,3],[3,9,8,7,4,2],[6,8,10,1,4],[9,10,7,6],[5,10,8,6,3],[0,1,7,8,9,5]];
-
-var node_number = example.length;
+//var example = [[10,5,3,2,1],[0,2,4,7,10],[0,3,6,4,1],[0,5,9,6,2],[2,6,7,1],[0,10,9,3],[3,9,8,7,4,2],[6,8,10,1,4],[9,10,7,6],[5,10,8,6,3],[0,1,7,8,9,5]];
+//var example = [[3,2,1],[0,2,3],[0,3,1],[0,1,2]];
+var example = [[8,7,5,3,2,1],[0,2,4,8],[0,3,4,1],[5,6,4,2,0],[7,8,1,2,3,6],[3,0,7,6],[3,5,7,4],[0,8,4,6,5],[0,1,4,7]];
 
 var result_arcs = creaSchnyderRealizers(example);
 
@@ -140,5 +140,5 @@ var result_arcs = creaSchnyderRealizers(example);
 // 	);
 // }
 //console.log(result_arcs);
-coordinates(example, result_arcs);
+find_coordinates(example, result_arcs);
 

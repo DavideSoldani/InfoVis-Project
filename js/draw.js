@@ -1,116 +1,81 @@
-Array.prototype.removeEl = function(el) {
-    this.splice(this.indexOf(el), 1);
-};
-
-var fontsize = 30;
-var offset = 50;
-multiplier = 80;
+var larghezza = window.innerWidth - 50;
+var altezza = window.innerHeight - 50;
+var multiplier = 50;
+var offsetX = 100;
+var offsetY = 700;
 
 
-function Node(data, parent) {
-    this.data = data;
-    this.parent = parent;
-    this.children = [];
+
+function draw(coordinates, arcs){
+    var svg = d3.select("#svg");
+    svg.attr("width", larghezza).attr("height", altezza).style('border','2px solid black');
+
+    drawEdges(svg,arcs,coordinates);
+    drawNodes(svg,coordinates);
+
+
 }
 
-function Tree(root) {
-    this.root = root;
+function drawNodes(svg,coordinates) {
+
+    coordinates.forEach(function (element,index) {
+        svg.append("circle")
+            .attr("cx", offsetX + (element[0] ) * multiplier)
+            .attr("cy", offsetY - (element[1]) * multiplier)
+            .attr("r", 15)
+            .attr("id", "node" + index)
+            .style("stroke", "black")
+            .style("stroke-width", "5px")
+            .style("fill", "gray");
+    });
 }
 
-function createTrees(arcs) {
-    var trees = [];
-    arcs.forEach(function (element) {
-        if (element.tree === -1){
-            trees.push(new Tree(new Node(element.tail, null)));
+
+function drawEdges(svg,arcs, coordinates) {
+
+    arcs.forEach(function (element,index) {
+
+        var startNode = coordinates[element.tail];
+        var endNode = coordinates[element.arrow];
+
+        startX = offsetX + (startNode[0]) * multiplier;
+        startY = offsetY - (startNode[1]) * multiplier;
+
+        endX = offsetX + endNode[0]* multiplier;
+        endY = offsetY - endNode[1]* multiplier;
+
+
+        if (element.tree === 0){
+            svg.append("path")
+                .attr("d","M"+startX+" " + startY+ " L" + endX + " " + endY )
+                .style("stroke","blue")
+                .style("stroke-width","5px");
         }
-    });
-
-    return trees;
-}
-
-function populateTree(node,arcs, color) {
-    if (arcs.length === 0)
-        return;
-
-    var archi = arcs.slice();
-    arcs.forEach(function (element) {
-        if (node.data === element.arrow && element.tree === color){
-            node.children.push(new Node(element.tail, node));
-            archi.removeEl(element);
+        else if (element.tree === 1){
+            svg.append("path")
+                .attr("d", "M" + startX + " " + startY + " L" + endX + " " + endY)
+                .style("stroke", "green")
+                .style("stroke-width", "5px");
+        }
+        else if (element.tree === coordinates.length -1){
+            svg.append("path")
+                .attr("d", "M" + startX + " " + startY + " L" + endX + " " + endY)
+                .style("stroke", "red")
+                .style("stroke-width", "5px");
+        }
+        else{
+            svg.append("path")
+                .attr("d", "M" + startX + " " + startY + " L" + endX + " " + endY)
+                .style("stroke", "black")
+                .style("stroke-width", "5px");
         }
 
-    });
 
-    node.children.forEach(function (element) {
-        populateTree(element,archi, color);
-    });
+    })
 }
 
-function calculateVr(nodes){
-
-}
-
-function coordinates(nodes, arcs){
-    trees = createTrees(arcs);
-
-    populateTree(trees[0].root,arcs, trees[0].root.data);
-    populateTree(trees[1].root,arcs, trees[1].root.data);
-    populateTree(trees[2].root,arcs, trees[2].root.data);
-
-    var t1 = trees[0];
-    var t2 = trees[1];
-    var t3 = trees[2];
 
 
-    nodes.forEach(function (element,index) {
-        calculateVr(t1,nodes);
-    });
-
-
-
-    //console.log(countDescendants(findNodeInTree(t1,0), 0));
-    console.log(countAncestor(findNodeInTree(t1,8)))
-}
-
-function findNodeInTree(tree, node) {
-    return findNode(tree.root, node);
-}
-
-function findNode(currentNode, node) {
-    var nodo = null;
-    if (currentNode.data === node){
-        return currentNode;
-    }
-
-    for (let i = 0; i < currentNode.children.length; i++) {
-        var nodoTrovato = findNode(currentNode.children[i], node);
-        if (nodoTrovato != null) {
-            return  nodoTrovato;
-        }
-    }
-}
-
-function countDescendants(node) {
-    if (node.children.length === 0){
-        return 1;
-    }
-    var cont = 0;
-    node.children.forEach(function (element) {
-        cont += countDescendants(element);
-    });
-    return cont+1;
-}
-
-function countAncestor(node) {
-    cont = 1;
-    while (node.parent != null){
-        cont++;
-        node = node.parent;
-    }
-    return cont;
-}
-
-// function draw(arcs){
 //     var esterni = [];
 //     arcs.forEach(function (element) {
 //         element.printArc();
