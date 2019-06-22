@@ -2,13 +2,15 @@
 Definisco l'oggetto Arco
 --------------------------------------------------------------------------------------------------------------------*/
 function Arc(tail, arrow, tree) {
-  this.tail = tail; //nodo da cui parte l'arco
-  this.arrow = arrow; //nodo in cui arriva l'arco
-  this.tree = tree; //albero di appartenenza dell'arco (t1,t2,t3)
+	this.tail = tail; //nodo da cui parte l'arco
+	this.arrow = arrow; //nodo in cui arriva l'arco
+	this.tree = tree; //albero di appartenenza dell'arco (t1,t2,t3)
 }
 
-Node.prototype.printArc = function () {
-  return "The arc start from "+this.tail.toString()+" and goes to "+this.arrow.toString()+"it belongs to the  "+this.tree.toString()+" tree";
+
+
+Arc.prototype.printArc = function () {
+	console.log("The arc start from "+this.tail.toString()+" and goes to "+this.arrow.toString()+"it belongs to the  "+this.tree.toString()+" tree");
 };
 
 
@@ -16,9 +18,9 @@ function creaSchnyderRealizers(embedding){
 	var embeddingCopy = embedding.map(elemnt => elemnt.slice());
 	var nodiEliminati = [];
 	//inizializzo gli alberi
-	t1 = 0; //radice di t1
-	t2 = 1; //radice di t2
-	t3 = embedding.length-1; //radice di t3
+	var t1 = 0; //radice di t1
+	var t2 = 1; //radice di t2
+	var t3 = embedding.length-1; //radice di t3
 
 	//elimino i nodi e gli archi in modo da contrarre il grafo
 	for(let i=0; i<embeddingCopy.length-3; i++){
@@ -57,24 +59,24 @@ function creaSchnyderRealizers(embedding){
 		nodiEliminati.push(nodoDaEliminare);
 	}
 
-	//fase di decompressione
+	//fase di decompressione---->
 
 	var arcs = [];
 
 	while(nodiEliminati.length>0){
 		let nodoAttuale = nodiEliminati.pop();
-		
+
 		let viciniNodoAttuale = embeddingCopy[nodoAttuale];
 
 		let t3end = viciniNodoAttuale.indexOf(t3);
 
-		let t1end = t3end == 0 ?
+		let t1end = t3end === 0 ?
 			viciniNodoAttuale.length - 1 : t3end - 1;
 
-		let t2end = t3end == viciniNodoAttuale.length - 1 ?
+		let t2end = t3end === viciniNodoAttuale.length - 1 ?
 			0 : t3end + 1
 
-		let temp = new Arc(nodoAttuale,t3,t3)
+		let temp = new Arc(nodoAttuale,t3,t3);
 		arcs.push(temp);
 		temp = new Arc(nodoAttuale, viciniNodoAttuale[t1end],t1);
 		arcs.push(temp);
@@ -105,17 +107,13 @@ function creaSchnyderRealizers(embedding){
 				else return true;
 
 			});
-
 			arcs.splice(t3IndiceArco,1);
 		}
-
 		for(let i=0; i<viciniNodoAttuale.length;i++){
 			let temp = new Arc(viciniNodoAttuale[i],nodoAttuale,t3);
 			arcs.push(temp);
 		}
-
 	}
-	
 	let temp = new Arc(t1,t2,-1);
 	arcs.push(temp);
 	temp = new Arc(t2, t3,-1);
@@ -126,18 +124,21 @@ function creaSchnyderRealizers(embedding){
 	return arcs;
 }
 
-var example = [[10,5,3,2,1],[0,2,4,7,10],[0,3,6,4,1],[0,5,9,6,2],[2,6,7,1],[0,10,9,3],[3,9,8,7,4,2],[6,8,10,1,4],[9,10,7,6],[5,10,8,6,3],[0,1,7,8,9,5]]
+var example = [[10,5,3,2,1],[0,2,4,7,10],[0,3,6,4,1],[0,5,9,6,2],[2,6,7,1],[0,10,9,3],[3,9,8,7,4,2],[6,8,10,1,4],[9,10,7,6],[5,10,8,6,3],[0,1,7,8,9,5]];
+
+var node_number = example.length;
 
 var result_arcs = creaSchnyderRealizers(example);
 
-for(let i=0; i<result_arcs.length;i++){
-	let arc = result_arcs[i];
-	console.log(
-		arc.tail+"---->"+arc.arrow + (arc.tree === t1 ? ", blue" :
-									  arc.tree === t2 ? ", green" :
-									  arc.tree === t3 ? ", red" : ", ext")
-
-
-		);
-}
+// for(let i=0; i<result_arcs.length;i++){
+// 	let arc = result_arcs[i];
+// 	console.log(
+// 		arc.tail+"---->"+arc.arrow + (arc.tree === t1 ? ", blue" :
+// 		arc.tree === t2 ? ", green" :
+// 			arc.tree === t3 ? ", red" : ", ext")
+//
+// 	);
+// }
+//console.log(result_arcs);
+coordinates(example, result_arcs);
 
