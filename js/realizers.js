@@ -74,7 +74,7 @@ function creaSchnyderRealizers(embedding){
 			viciniNodoAttuale.length - 1 : t3end - 1;
 
 		let t2end = t3end === viciniNodoAttuale.length - 1 ?
-			0 : t3end + 1
+			0 : t3end + 1;
 
 		let temp = new Arc(nodoAttuale,t3,t3);
 		arcs.push(temp);
@@ -102,9 +102,7 @@ function creaSchnyderRealizers(embedding){
 					return false;
 				else if(elem.arrow!==t3)
 					return false;
-				else if(elem.tree!==t3)
-					return false;
-				else return true;
+				else return elem.tree === t3;
 
 			});
 			arcs.splice(t3IndiceArco,1);
@@ -125,10 +123,10 @@ function creaSchnyderRealizers(embedding){
 }
 
 //var example = [[10,5,3,2,1],[0,2,4,7,10],[0,3,6,4,1],[0,5,9,6,2],[2,6,7,1],[0,10,9,3],[3,9,8,7,4,2],[6,8,10,1,4],[9,10,7,6],[5,10,8,6,3],[0,1,7,8,9,5]];
-//var example = [[3,2,1],[0,2,3],[0,3,1],[0,1,2]];
+var example = [[3,2,1],[0,2,3],[0,3,1],[0,1,2]];
 //var example = [[8,7,5,3,2,1],[0,2,4,8],[0,3,4,1],[5,6,4,2,0],[7,8,1,2,3,6],[3,0,7,6],[3,5,7,4],[0,8,4,6,5],[0,1,4,7]];
-var example = [[15,14,8,7,6,2,1],[0,2,3,4,5,15],[0,6,9,3,1],[2,9,12,11,10,4,1],[3,10,5,1],[4,10,13,15,1],[0,7,9,2],[0,8,9,6],[0,14,9,7],[8,14,12,3,2,6,7],[3,11,13,5,4],
-				[12,13,10,3],[9,14,15,13,11,3],[12,15,5,10,11],[0,15,12,9,8],[0,1,5,13,12,14]];
+//var example = [[15,14,8,7,6,2,1],[0,2,3,4,5,15],[0,6,9,3,1],[2,9,12,11,10,4,1],[3,10,5,1],[4,10,13,15,1],[0,7,9,2],[0,8,9,6],[0,14,9,7],[8,14,12,3,2,6,7],[3,11,13,5,4],
+//				[12,13,10,3],[9,14,15,13,11,3],[12,15,5,10,11],[0,15,12,9,8],[0,1,5,13,12,14]];
 
 var result_arcs = creaSchnyderRealizers(example);
 

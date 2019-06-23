@@ -1,7 +1,7 @@
 Array.prototype.removeEl = function(el) {
     this.splice(this.indexOf(el), 1);
 };
-var multiplier = 50;
+var multiplier = 0;
 var nodeNumber = 0;
 
 function Node(data, parent) {
@@ -139,7 +139,7 @@ function calculateGv(tb, tg, tr, label) {
 function find_coordinates(nodes, arcs){
     nodeNumber =  nodes.length;
     trees = createTrees(arcs);
-
+    multiplier = 1000/nodeNumber;
     populateTree(trees[0].root,arcs, trees[0].root.data);
     populateTree(trees[1].root,arcs, trees[1].root.data);
     populateTree(trees[2].root,arcs, trees[2].root.data);
