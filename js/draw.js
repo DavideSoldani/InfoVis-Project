@@ -30,6 +30,12 @@ function drawNodes(svg,coordinates) {
             .style("stroke", "black")
             .style("stroke-width", "3px")
             .style("fill", "gray");
+
+            svg.append("text")
+                .attr("x", element[0]-6)
+                .attr("y", - element[1])
+                .attr("dy", ".35em")
+                .text(index.toString());
     });
 }
 
