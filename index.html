@@ -2,16 +2,41 @@
 <html>
     <head>
     	<meta charset="UTF-8">
-       <!-- <link rel="stylesheet" href="index_css.css"> -->
         <title>Realizers</title>
+        <link rel="stylesheet" href="js/index_css.css">
+        <!--style></style-->
     </head>
     <body>
-        <svg id="svg"></svg>
+    <div class="select">
+    <select name="dropbtn" id="dropdown" onchange="getSelectedValue()">
+        <option selected disabled>Choose an option > </option>
+        <option value="simple_triangulation">Simple triangulation</option>
+        <option value="nine_degree">Nine degree</option>
+        <option value="eleven_degree">Eleven degree</option>
+        <option value="sixteen_degree">Sixteen degree</option>
+    </select>
 
-        <script src="http://d3js.org/d3.v5.min.js"></script>
-        <script src="js/coordinates.js"></script>
-        <script src="js/draw.js"></script>
-        <script src="js/realizers.js"></script>
-        <script src="js/main.js"></script>
+    <button class="btn draw" onclick="drawIt()">Draw</button>
+    <script>
+        function getSelectedValue(){
+            document.getElementById("dropdown").value;
+        }
+
+        function drawIt(){
+            d3.select("svg").selectAll("*").remove();
+            var value = document.getElementById("dropdown").value;
+            drawGraph(graphs[value.toString()]);
+        }
+    </script>
+    </div>
+
+
+    <svg id="svg"></svg>
+
+    <script src="http://d3js.org/d3.v5.min.js"></script>
+    <script src="js/coordinates.js"></script>
+    <script src="js/draw.js"></script>
+    <script src="js/realizers.js"></script>
+    <script src="js/main.js"></script>
     </body>
 </html>

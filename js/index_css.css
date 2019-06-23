@@ -1,0 +1,38 @@
+.btn {
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: white;
+    color: black;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.draw {
+    border-color: black;
+    color: black
+}
+
+.draw:hover {
+    background: deepskyblue;
+    color: white;
+}
+.select select{
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: white;
+    color: black;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor:pointer;
+    -ms-appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.select select:hover{
+    background: deepskyblue;
+    color: white;
+}
+
