@@ -122,25 +122,3 @@ function creaSchnyderRealizers(embedding){
 	return arcs;
 }
 
-var simple_traingulation = [[3,2,1],[0,2,3],[0,3,1],[0,1,2]];
-var nine_degree = [[8,7,5,3,2,1],[0,2,4,8],[0,3,4,1],[5,6,4,2,0],[7,8,1,2,3,6],[3,0,7,6],[3,5,7,4],[0,8,4,6,5],[0,1,4,7]];
-var eleven_degree = [[10,5,3,2,1],[0,2,4,7,10],[0,3,6,4,1],[0,5,9,6,2],[2,6,7,1],[0,10,9,3],[3,9,8,7,4,2],[6,8,10,1,4],[9,10,7,6],[5,10,8,6,3],[0,1,7,8,9,5]];
-var sixteen_degree = [[15,14,8,7,6,2,1],[0,2,3,4,5,15],[0,6,9,3,1],[2,9,12,11,10,4,1],[3,10,5,1],[4,10,13,15,1],[0,7,9,2],[0,8,9,6],[0,14,9,7],[8,14,12,3,2,6,7],[3,11,13,5,4],
-			[12,13,10,3],[9,14,15,13,11,3],[12,15,5,10,11],[0,15,12,9,8],[0,1,5,13,12,14]];
-
-var example = sixteen_degree
-
-var result_arcs = creaSchnyderRealizers(example);
-
-// for(let i=0; i<result_arcs.length;i++){
-// 	let arc = result_arcs[i];
-// 	console.log(
-// 		arc.tail+"---->"+arc.arrow + (arc.tree === t1 ? ", blue" :
-// 		arc.tree === t2 ? ", green" :
-// 			arc.tree === t3 ? ", red" : ", ext")
-//
-// 	);
-// }
-//console.log(result_arcs);
-find_coordinates(example, result_arcs);
-
