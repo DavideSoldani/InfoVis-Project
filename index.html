@@ -7,23 +7,20 @@
         <!--style></style-->
     </head>
     <body>
-    <div class="select">
-    <select name="dropbtn" id="dropdown" onchange="getSelectedValue()">
-        <option selected disabled>Choose an option > </option>
+    <div class="select" style="margin-bottom: 5px">
+        <span style="font-size: 20px"><strong>Graph: </strong></span>
+    <select name="dropbtn" id="dropdown">
     </select>
+        <span style="font-size: 20px"><strong>Animation: </strong></span>
+        <select name="dropbtn" id="dropdown_animation">
+            <option>None </option>
+            <option>Trees</option>
+            <option>Edges</option>
+            <option>Trees + Edges</option>
+        </select>
 
-    <button class="btn draw" onclick="drawIt()">Draw</button>
-    <script>
-        function getSelectedValue(){
-            document.getElementById("dropdown").value;
-        }
+    <button class="btn draw" onclick="drawIt()" style="background-color: green">Draw</button>
 
-        function drawIt(){
-            d3.select("svg").selectAll("*").remove();
-            var value = document.getElementById("dropdown").value;
-            drawGraph(graphs[value.toString()]);
-        }
-    </script>
     </div>
 
 

@@ -15,17 +15,17 @@ Arc.prototype.printArc = function () {
 
 
 function creaSchnyderRealizers(embedding){
-	var embeddingCopy = embedding.map(elemnt => elemnt.slice());
-	var nodiEliminati = [];
+	let embeddingCopy = embedding.map(elemnt => elemnt.slice());
+	let nodiEliminati = [];
 	//inizializzo gli alberi
-	var t1 = 0; //radice di t1
-	var t2 = 1; //radice di t2
-	var t3 = embedding.length-1; //radice di t3
+	let t1 = 0; //radice di t1
+	let t2 = 1; //radice di t2
+	let t3 = embedding.length-1; //radice di t3
 
 	//elimino i nodi e gli archi in modo da contrarre il grafo
 	for(let i=0; i<embeddingCopy.length-3; i++){
-		var nodiDaIgnorare = [t1,t2,t3].concat(nodiEliminati);
-		var viciniDiT3 = embeddingCopy[t3];
+		let nodiDaIgnorare = [t1,t2,t3].concat(nodiEliminati);
+		let viciniDiT3 = embeddingCopy[t3];
 		//scorro i nodi che hanno un arco in comune a t3
 		let nodoDaEliminare = null;
 		for(let j=0; j<viciniDiT3.length; j++){
@@ -61,7 +61,7 @@ function creaSchnyderRealizers(embedding){
 
 	//fase di decompressione---->
 
-	var arcs = [];
+	let arcs = [];
 
 	while(nodiEliminati.length>0){
 		let nodoAttuale = nodiEliminati.pop();
@@ -118,7 +118,6 @@ function creaSchnyderRealizers(embedding){
 	arcs.push(temp);
 	temp = new Arc(t3, t1,-1);
 	arcs.push(temp);
-	console.log(arcs.length);
 	return arcs;
 }
 

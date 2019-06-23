@@ -1,8 +1,8 @@
 Array.prototype.removeEl = function(el) {
     this.splice(this.indexOf(el), 1);
 };
-var multiplier = 0;
-var nodeNumber = 0;
+let multiplier = 0;
+let nodeNumber = 0;
 
 function Node(data, parent) {
     this.data = data;
@@ -15,7 +15,7 @@ function Tree(root) {
 }
 
 function createTrees(arcs) {
-    var trees = [];
+    let trees = [];
     arcs.forEach(function (element) {
         if (element.tree === -1){
             trees.push(new Tree(new Node(element.tail, null)));
@@ -29,7 +29,7 @@ function populateTree(node,arcs, color) {
     if (arcs.length === 0)
         return;
 
-    var archi = arcs.slice();
+    let archi = arcs.slice();
     arcs.forEach(function (element) {
         if (node.data === element.arrow && element.tree === color){
             node.children.push(new Node(element.tail, node));
@@ -44,27 +44,27 @@ function populateTree(node,arcs, color) {
 }
 
 function calculateRv(tb, tg, tr, label){
-    var nodeInR = findNodeInTree(tr,label);
-    var numdescR = countDescendants(nodeInR);
+    let nodeInR = findNodeInTree(tr,label);
+    let numdescR = countDescendants(nodeInR);
     //console.log("numdescR   " + numdescR);
 
-    var nodeInG = findNodeInTree(tg, label);
-    var numancG = countAncestor(nodeInG);
+    let nodeInG = findNodeInTree(tg, label);
+    let numancG = countAncestor(nodeInG);
 
     //console.log("numAncG       "+ numancG);
     //////////
-    var sumDescBv = 0;
-    var nodeInB = findNodeInTree(tb,label);
-    var node = nodeInB;
+    let sumDescBv = 0;
+    let nodeInB = findNodeInTree(tb,label);
+    let node = nodeInB;
     while (node.parent != null){
-        var currentNode = findNodeInTree(tr, node.data);
+        let currentNode = findNodeInTree(tr, node.data);
         sumDescBv += countDescendants(currentNode);
         node = node.parent;
     }
 
     //console.log("sumDescB     "+sumDescBv);
 
-    var sumDescGv = 0;
+    let sumDescGv = 0;
     node = nodeInG;
     while (node.parent != null){
         currentNode = findNodeInTree(tr, node.data);
@@ -80,24 +80,24 @@ function calculateRv(tb, tg, tr, label){
 
 
 function calculateBv(tb, tg, tr, label) {
-    var nodeInB = findNodeInTree(tb,label);
-    var numdescB = countDescendants(nodeInB);
-    var nodeInR = findNodeInTree(tr, label);
+    let nodeInB = findNodeInTree(tb,label);
+    let numdescB = countDescendants(nodeInB);
+    let nodeInR = findNodeInTree(tr, label);
 
-    var numancR = countAncestor(nodeInR);
+    let numancR = countAncestor(nodeInR);
 
     //////////
-    var sumDescRv = 0;
-    var node = nodeInR;
+    let sumDescRv = 0;
+    let node = nodeInR;
     while (node.parent != null){
-        var currentNode = findNodeInTree(tb, node.data);
+        let currentNode = findNodeInTree(tb, node.data);
         sumDescRv += countDescendants(currentNode);
         node = node.parent;
     }
 
 
-    var sumDescGv = 0;
-    var nodeInG = findNodeInTree(tg, label);
+    let sumDescGv = 0;
+    let nodeInG = findNodeInTree(tg, label);
     node = nodeInG;
     while (node.parent != null){
         currentNode = findNodeInTree(tb, node.data);
@@ -110,22 +110,22 @@ function calculateBv(tb, tg, tr, label) {
 }
 
 function calculateGv(tb, tg, tr, label) {
-    var nodeInG = findNodeInTree(tg,label);
-    var numdescG = countDescendants(nodeInG);
-    var nodeInB = findNodeInTree(tb, label);
-    var numancB = countAncestor(nodeInB);
+    let nodeInG = findNodeInTree(tg,label);
+    let numdescG = countDescendants(nodeInG);
+    let nodeInB = findNodeInTree(tb, label);
+    let numancB = countAncestor(nodeInB);
 
     //////////
-    var sumDescRv = 0;
-    var nodeInR = findNodeInTree(tr, label);
-    var node = nodeInR;
+    let sumDescRv = 0;
+    let nodeInR = findNodeInTree(tr, label);
+    let node = nodeInR;
     while (node.parent != null){
-        var currentNode = findNodeInTree(tg, node.data);
+        let currentNode = findNodeInTree(tg, node.data);
         sumDescRv += countDescendants(currentNode);
         node = node.parent;
     }
 
-    var sumDescBv = 0;
+    let sumDescBv = 0;
     node = nodeInB;
     while (node.parent != null){
         currentNode = findNodeInTree(tg, node.data);
@@ -136,7 +136,7 @@ function calculateGv(tb, tg, tr, label) {
     return 2+sumDescBv + sumDescRv - numdescG - numancB;
 }
 
-function find_coordinates(nodes, arcs){
+function find_coordinates(nodes, arcs, animation){
     nodeNumber =  nodes.length;
     trees = createTrees(arcs);
     multiplier = 1000/nodeNumber;
@@ -144,11 +144,11 @@ function find_coordinates(nodes, arcs){
     populateTree(trees[1].root,arcs, trees[1].root.data);
     populateTree(trees[2].root,arcs, trees[2].root.data);
 
-    var tb = trees[0];
-    var tg = trees[1];
-    var tr = trees[2];
+    let tb = trees[0];
+    let tg = trees[1];
+    let tr = trees[2];
 
-    var coordinates = [];
+    let coordinates = [];
 
     nodes.forEach(function (element,index) {
         if (index > 1 && index < nodes.length - 1) {
@@ -164,10 +164,7 @@ function find_coordinates(nodes, arcs){
     coordinates[nodeNumber-1] = [multiplier,0,(nodeNumber-2)*multiplier];
 
 
-    console.log(coordinates);
-
-
-    draw(coordinates, arcs);
+    draw(coordinates, arcs, animation);
 
 }
 
@@ -176,13 +173,13 @@ function findNodeInTree(tree, node) {
 }
 
 function findNode(currentNode, node) {
-    var nodo = null;
+    let nodo = null;
     if (currentNode.data === node){
         return currentNode;
     }
 
     for (let i = 0; i < currentNode.children.length; i++) {
-        var nodoTrovato = findNode(currentNode.children[i], node);
+        let nodoTrovato = findNode(currentNode.children[i], node);
         if (nodoTrovato != null) {
             return  nodoTrovato;
         }
@@ -193,7 +190,7 @@ function countDescendants(node) {
     if (node.children.length === 0){
         return 1;
     }
-    var cont = 0;
+    let cont = 0;
     node.children.forEach(function (element) {
         cont += countDescendants(element);
     });
