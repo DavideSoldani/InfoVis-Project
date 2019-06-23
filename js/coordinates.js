@@ -1,7 +1,7 @@
 Array.prototype.removeEl = function(el) {
     this.splice(this.indexOf(el), 1);
 };
-var multiplier = 100;
+var multiplier = 50;
 var nodeNumber = 0;
 
 function Node(data, parent) {
