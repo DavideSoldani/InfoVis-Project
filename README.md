@@ -15,5 +15,7 @@ Opening index.html a user can choose a graph and an animation, clicking on "draw
 The main logic of the project is contained in:
 
 Realizer.js that implements the code to find three realizers from a planar embedding ordered in canonical order.
+
 Coordinates.js that implements the code to find grid coordinates from the realizers.
+
 Draw.js that takes in input the coordinates and draws it with D3.js
