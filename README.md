@@ -9,6 +9,8 @@ This project implements Schnyder realizers method to compute an automatic graph 
 
 We have defined four graphs of differents degrees and two animations for drawing the arcs these have been be combined for creating another more complex animation.
 
+We have defined another animation to show how Schnyder realizers algorithm works to find the realizers, this animation in called "Compression + Expansion"
+
 Opening index.html a user can choose a graph and an animation, clicking on "draw" button the system shows the selected graph with the selected animation.
 
 
