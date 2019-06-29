@@ -12,6 +12,7 @@ function draw(coordinates, arcs, animation){
     let latoGrafo = maxCoord + 50;
     svg.attr("viewBox","0 "+ (-maxCoord - offset) +" " + latoGrafo + " " + latoGrafo);
 
+
     svg.append("g")
         .attr("id","edges");
     svg.append("g")
@@ -20,8 +21,8 @@ function draw(coordinates, arcs, animation){
     drawEdges(d3.select("#edges"),arcs,coordinates, animation);
 
     if (animation === "Compression + Expansion"){
-         compression_expansion(coordinates, arcs);
- 		
+        compressionAndExpansion(coordinates, arcs);
+
     }
 }
 
@@ -47,20 +48,40 @@ function drawNodes(nodes_group,coordinates) {
     });
 }
 
-function compression_expansion(coordinates, arcs) {
+function getColor(arc) {
+   console.log("color = "+ arc.tree);
+   if (arc.tree === -1){
+       return "black";
+   }
+   else if(arc.tree === 0){
+       return "blue";
+   }
+   else if (arc.tree === 1){
+       return "green";
+   }
+   else return "red";
+
+}
+
+function compressionAndExpansion(coordinates, arcs) {
 
 
     for (let i = 0; i < nodeNumber - 1; i++){
-       setTimeout(function () {
-            let index = nodeNumber-1-i;
+        let index = nodeNumber-1-i;
+        let currentNode = d3.select("#node" + index);
+        let currentText = d3.select("#text" + index);
+
+        let oldX = currentNode.attr("cx");
+        let oldY = currentNode.attr("cy");
+
+
+        //compressione
+        setTimeout(function () {
             if (index !== 0 && index !== 1 && index !== coordinates.length-1) {
-                let currentNode = d3.select("#node" + index);
-                let currentText = d3.select("#text" + index);
                 currentNode.transition().duration(1000).attr("cx", coordinates[nodeNumber-1][0]).attr("cy", -coordinates[nodeNumber - 1][1]);
                 currentText.transition().duration(1000).attr("x", coordinates[nodeNumber-1][0] - 6).attr("y", -coordinates[nodeNumber - 1][1]);
 
                 arcs.forEach(function (element) {
-                    console.log(element.tail + " " + element.arrow);
                     if (element.tail === index){
                         let currentEdge = d3.select("#edge"+element.tail+"-"+element.arrow);
                         let path = currentEdge.attr("d");
@@ -77,63 +98,47 @@ function compression_expansion(coordinates, arcs) {
                     }
                 });
 
-
             }
         }, (i+1)*1000);
-    }
 
- 
-
-   
-    for (let index = 0; index < (coordinates.length - 1); index++){
+        //espansione
         setTimeout(function () {
-            if (index !== 0 && index !== 1 && index !== coordinates.length-1) {
-                let currentNode = d3.select("#node" + index);
-                let currentText = d3.select("#text" + index);
-                console.log("aoooo"+currentNode);
-                currentNode.transition().duration(1000).attr("cx", coordinates[index][0]).attr("cy", -coordinates[index][1]);
-                currentText.transition().duration(1000).attr("x", coordinates[index][0] - 6).attr("y", -coordinates[index][1]);
+            currentNode.transition().duration(1000).attr("cx", oldX).attr("cy", oldY);
+            currentText.transition().duration(1000).attr("x", oldX-6).attr("y", oldY);
 
-                arcs.forEach(function (element) {
+            arcs.forEach(function (element) {
 
-                	let startNode = coordinates[element.tail];
-           		 	let endNode = coordinates[element.arrow];
+                let startNode = coordinates[element.tail];
+                let endNode = coordinates[element.arrow];
 
-           	 		let startX = startNode[0];
-           			let startY = -startNode[1];
+                let startX = startNode[0];
+                let startY = -startNode[1];
 
-            		let endX = endNode[0];
-            		let endY = -endNode[1];
+                let endX = endNode[0];
+                let endY = -endNode[1];
 
-                    console.log(element.tail + " " + element.arrow);
-                    
+                if (element.tail === index){
                     let currentEdge = d3.select("#edge"+element.tail+"-"+element.arrow);
-                   
-                    let newpath = "M" + startX + " " + startY + " L" + endX + " " + endY;
-               
+                    let path = currentEdge.attr("d");
+                    let end = "L"+ path.split("L")[1];
+                    let newpath = "M"+ startX+ " "+ startY + " "+ end;
+                    let color = getColor(element);
+                    currentEdge.transition().duration(1000).attr("d", newpath).style("stroke",color);
+                }
+                else if(element.arrow === index && element.tail !== 0 && element.tail !== 1 && element.tail !== coordinates.length-1){
+                    let currentEdge = d3.select("#edge"+element.tail+"-"+element.arrow);
+                    let path = currentEdge.attr("d");
+                    let start = path.split("L")[0];
+                    let newpath = start + " L" +endX+ " "+endY;
+                    let color = getColor(element);
+                    currentEdge.transition().duration(1000).attr("d", newpath).style("stroke",color);
+                }
+            });
+        },(coordinates.length-3)*1000 + (index+1)*1000);
 
-                    if (element.tree === 0) {
-                	currentEdge.transition().duration(1000).attr("d", newpath).style("stroke", "blue");
-            		} else if (element.tree === 1) {
-                	currentEdge.transition().duration(1000).attr("d", newpath).style("stroke", "green");
-            		} else if (element.tree === coordinates.length - 1) {
-                	currentEdge.transition().duration(1000).attr("d", newpath).style("stroke", "red");
-           			} else {
-                	currentEdge.transition().duration(1000).attr("d", newpath).style("stroke", "black");
-            		}
-
-                 
-                    
-                });
-
-
-            }
-        }, (nodeNumber)*1000);
     }
-	
-
-
 }
+
 function drawEdges(edges_group,arcs, coordinates, animation) {
 
     if (animation === "Compression + Expansion"){
