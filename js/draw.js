@@ -20,66 +20,11 @@ function draw(coordinates, arcs, animation){
     drawEdges(d3.select("#edges"),arcs,coordinates, animation);
 
     if (animation === "Compression + Expansion"){
-        compression(coordinates, arcs);
- 		for(let i = 0; i<100000; i++){
- 			if (i ===99999){
- 				expansion(coordinates,arcs);
- 			}	
- 		}
+         compression_expansion(coordinates, arcs);
+ 		
     }
 }
 
-
-//function expansion(nodes_group, edges_group, coordinates, arcs) {
-function expansion(coordinates, arcs) {
-
-	 for (let index = 0; index < (coordinates.length - 1); index++){
-        setTimeout(function () {
-            if (index !== 0 && index !== 1 && index !== coordinates.length-1) {
-                let currentNode = d3.select("#node" + index);
-                let currentText = d3.select("#text" + index);
-                console.log("aoooo"+currentNode);
-                currentNode.transition().duration(1000).attr("cx", coordinates[index][0]).attr("cy", -coordinates[index][1]);
-                currentText.transition().duration(1000).attr("x", coordinates[index][0] - 6).attr("y", -coordinates[index][1]);
-
-                arcs.forEach(function (element) {
-
-                	let startNode = coordinates[element.tail];
-           		 	let endNode = coordinates[element.arrow];
-
-           	 		let startX = startNode[0];
-           			let startY = -startNode[1];
-
-            		let endX = endNode[0];
-            		let endY = -endNode[1];
-
-                    console.log(element.tail + " " + element.arrow);
-                    
-                    let currentEdge = d3.select("#edge"+element.tail+"-"+element.arrow);
-                   
-                    let newpath = "M" + startX + " " + startY + " L" + endX + " " + endY;
-                    currentEdge.transition().duration(1000).attr("d", newpath).style("stroke", "blue");
-
-                    if (element.tree === 0) {
-                	currentEdge.transition().duration(1000).attr("d", newpath).style("stroke", "blue");
-            		} else if (element.tree === 1) {
-                	currentEdge.transition().duration(1000).attr("d", newpath).style("stroke", "green");
-            		} else if (element.tree === coordinates.length - 1) {
-                	currentEdge.transition().duration(1000).attr("d", newpath).style("stroke", "red");
-           			} else {
-                	currentEdge.transition().duration(1000).attr("d", newpath).style("stroke", "black");
-            		}
-
-                 
-                    
-                });
-
-
-            }
-        }, (index+1)*1000);
-    }
-
-}
 
 function drawNodes(nodes_group,coordinates) {
 
@@ -102,11 +47,11 @@ function drawNodes(nodes_group,coordinates) {
     });
 }
 
-function compression(coordinates, arcs) {
+function compression_expansion(coordinates, arcs) {
 
 
     for (let i = 0; i < nodeNumber - 1; i++){
-        setTimeout(function () {
+       setTimeout(function () {
             let index = nodeNumber-1-i;
             if (index !== 0 && index !== 1 && index !== coordinates.length-1) {
                 let currentNode = d3.select("#node" + index);
@@ -136,6 +81,58 @@ function compression(coordinates, arcs) {
             }
         }, (i+1)*1000);
     }
+
+ 
+
+   
+    for (let index = 0; index < (coordinates.length - 1); index++){
+        setTimeout(function () {
+            if (index !== 0 && index !== 1 && index !== coordinates.length-1) {
+                let currentNode = d3.select("#node" + index);
+                let currentText = d3.select("#text" + index);
+                console.log("aoooo"+currentNode);
+                currentNode.transition().duration(1000).attr("cx", coordinates[index][0]).attr("cy", -coordinates[index][1]);
+                currentText.transition().duration(1000).attr("x", coordinates[index][0] - 6).attr("y", -coordinates[index][1]);
+
+                arcs.forEach(function (element) {
+
+                	let startNode = coordinates[element.tail];
+           		 	let endNode = coordinates[element.arrow];
+
+           	 		let startX = startNode[0];
+           			let startY = -startNode[1];
+
+            		let endX = endNode[0];
+            		let endY = -endNode[1];
+
+                    console.log(element.tail + " " + element.arrow);
+                    
+                    let currentEdge = d3.select("#edge"+element.tail+"-"+element.arrow);
+                   
+                    let newpath = "M" + startX + " " + startY + " L" + endX + " " + endY;
+               
+
+                    if (element.tree === 0) {
+                	currentEdge.transition().duration(1000).attr("d", newpath).style("stroke", "blue");
+            		} else if (element.tree === 1) {
+                	currentEdge.transition().duration(1000).attr("d", newpath).style("stroke", "green");
+            		} else if (element.tree === coordinates.length - 1) {
+                	currentEdge.transition().duration(1000).attr("d", newpath).style("stroke", "red");
+           			} else {
+                	currentEdge.transition().duration(1000).attr("d", newpath).style("stroke", "black");
+            		}
+
+                 
+                    
+                });
+
+
+            }
+        }, (nodeNumber)*1000);
+    }
+	
+
+
 }
 function drawEdges(edges_group,arcs, coordinates, animation) {
 
