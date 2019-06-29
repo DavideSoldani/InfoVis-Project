@@ -19,3 +19,19 @@ Realizer.js that implements the code to find three realizers from a planar embed
 Coordinates.js that implements the code to find grid coordinates from the realizers.
 
 Draw.js that takes in input the coordinates and draws it with D3.js
+
+
+
+References:
+
+For realizers computation:
+
+	https://www2.cs.arizona.edu/~kobourov/schnyder.pdf
+
+	http://acm.math.spbu.ru/~sk1/courses/1617f_au3/papers/schnyder-grid-embedding.pdf
+
+	http://www.dia.uniroma3.it/~infovis/slides/2018-2019/210-straight-line-grid-04.pdf
+
+For cordinates computation:
+
+	Handbook of Graph Drawing and Visualization (pages 219-220 for the coordinates implementation)
