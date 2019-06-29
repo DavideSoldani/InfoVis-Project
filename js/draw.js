@@ -49,7 +49,7 @@ function drawNodes(nodes_group,coordinates) {
 }
 
 function getColor(arc) {
-   console.log("color = "+ arc.tree);
+
    if (arc.tree === -1){
        return "black";
    }
@@ -74,10 +74,10 @@ function compressionAndExpansion(coordinates, arcs) {
         let oldX = currentNode.attr("cx");
         let oldY = currentNode.attr("cy");
 
-
         //compressione
         setTimeout(function () {
             if (index !== 0 && index !== 1 && index !== coordinates.length-1) {
+                currentNode.attr("class","locked");
                 currentNode.transition().duration(1000).attr("cx", coordinates[nodeNumber-1][0]).attr("cy", -coordinates[nodeNumber - 1][1]);
                 currentText.transition().duration(1000).attr("x", coordinates[nodeNumber-1][0] - 6).attr("y", -coordinates[nodeNumber - 1][1]);
 
@@ -103,7 +103,8 @@ function compressionAndExpansion(coordinates, arcs) {
 
         //espansione
         setTimeout(function () {
-            currentNode.transition().duration(1000).attr("cx", oldX).attr("cy", oldY);
+            let wrong_arcs = [];
+
             currentText.transition().duration(1000).attr("x", oldX-6).attr("y", oldY);
 
             arcs.forEach(function (element) {
@@ -111,11 +112,15 @@ function compressionAndExpansion(coordinates, arcs) {
                 let startNode = coordinates[element.tail];
                 let endNode = coordinates[element.arrow];
 
+                let endNodeSVG = d3.select("#node" + element.arrow);
+
                 let startX = startNode[0];
                 let startY = -startNode[1];
 
                 let endX = endNode[0];
                 let endY = -endNode[1];
+
+
 
                 if (element.tail === index){
                     let currentEdge = d3.select("#edge"+element.tail+"-"+element.arrow);
@@ -123,7 +128,14 @@ function compressionAndExpansion(coordinates, arcs) {
                     let end = "L"+ path.split("L")[1];
                     let newpath = "M"+ startX+ " "+ startY + " "+ end;
                     let color = getColor(element);
-                    currentEdge.transition().duration(1000).attr("d", newpath).style("stroke",color);
+                    if (endNodeSVG.attr("class") === "locked"){
+                        currentEdge.transition().duration(1000).attr("d", newpath).style("stroke","red");
+                        wrong_arcs.push([currentEdge,element]);
+                    }
+                    else {
+                        currentEdge.transition().duration(1000).attr("d", newpath).style("stroke",color);
+                    }
+
                 }
                 else if(element.arrow === index && element.tail !== 0 && element.tail !== 1 && element.tail !== coordinates.length-1){
                     let currentEdge = d3.select("#edge"+element.tail+"-"+element.arrow);
@@ -131,8 +143,30 @@ function compressionAndExpansion(coordinates, arcs) {
                     let start = path.split("L")[0];
                     let newpath = start + " L" +endX+ " "+endY;
                     let color = getColor(element);
-                    currentEdge.transition().duration(1000).attr("d", newpath).style("stroke",color);
+                    if (endNodeSVG.attr("class") === "locked"){
+                        currentEdge.transition().duration(1000).attr("d", newpath).style("stroke","red");
+                        wrong_arcs.push([currentEdge,element]);
+                    }
+                    else {
+                        currentEdge.transition().duration(1000).attr("d", newpath).style("stroke",color);
+                    }
                 }
+
+
+            });
+
+            currentNode.transition().duration(1000).attr("cx", oldX).attr("cy", oldY).on("end",function () {
+                currentNode.attr("class","unlocked");
+                wrong_arcs.forEach(function (element) {
+
+                    let startNodeSVG = d3.select("#node" + element[1].tail);
+                    let endNodeSVG = d3.select("#node" + element[1].arrow);
+                    if (startNodeSVG.attr("class") === "unlocked" &&  endNodeSVG.attr("class") === "unlocked"){
+                        let color = getColor(element[1]);
+                        element[0].style("stroke", color);
+
+                    }
+                });
             });
         },(coordinates.length-3)*1000 + (index+1)*1000);
 
